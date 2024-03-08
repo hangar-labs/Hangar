@@ -5,7 +5,7 @@ import shutil
 import pytest
 
 from hangar_sdk.core.blocks.aws_blocks import (
-    AwsEC2Instance,
+    AwsEc2Instance,
     AwsSecurityGroup,
     Egress,
     Ingress,

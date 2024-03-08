@@ -9,6 +9,7 @@ from attr import Factory, define, field
 
 from hangar_sdk.core import ExecutionType, IResource
 from hangar_sdk.core.terraform import Resource, ResourceGroup
+from hangar_sdk.resources.terraform import Expression
 from hangar_sdk.resources.terraform.aws import (
     aws_alb,
     aws_autoscaling_group,
@@ -18,6 +19,7 @@ from hangar_sdk.resources.terraform.aws import (
     aws_ecs_cluster_capacity_providers,
     aws_ecs_service,
     aws_ecs_task_definition,
+    aws_iam_instance_profile,
     aws_instance,
     aws_internet_gateway,
     aws_lambda_function,
@@ -216,7 +218,7 @@ class AwsVolume(Resource):
     _dependencies: list = field(default=Factory(list))
     availability_zone: str
     size: int
-    tags: dict
+    tags: Optional[dict]
 
     def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
         self.volume = aws_ebs_volume.AwsEbsVolume(
@@ -224,7 +226,7 @@ class AwsVolume(Resource):
             top_name=self.name,
             availability_zone=self.availability_zone,
             size=self.size,
-            tags=self.tags,
+            tags=self.tags if self.tags else None,
         )
 
         return [self.volume]
@@ -414,7 +416,8 @@ class AwsEc2Instance(Resource):
     subnet: AwsSubnet
     tags: dict
     os: str = "ubuntu"
-    security_groups: List[AwsSecurityGroup] = field(default=Factory(list))
+    security_groups: List[AwsSecurityGroup] = field(default=Factory(list)),
+    launch_script: str = None
 
     def __attrs_post_init__(self):
         super().__attrs_post_init__()
@@ -449,11 +452,14 @@ class AwsEc2Instance(Resource):
         self.instance = aws_instance.AwsInstance(
             group=self.group,
             top_name=self.name,
-            ami=self.ubuntu2204.ref().id,
+            ami=self.ami if self.ami else self.ubuntu2204.ref().id,
             instance_type=self.instance_type,
             subnet_id=self.subnet.subnet.ref().id,
             tags=self.tags,
-            vpc_security_group_ids=[sg.security_group.ref().id for sg in self.security_groups]
+            vpc_security_group_ids=[sg.security_group.ref().id for sg in self.security_groups],
+            user_data=Expression(
+                f'base64encode({json.dumps(self.launch_script)})'
+            ) if self.launch_script is not None else None
         )
 
     def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
@@ -566,31 +572,46 @@ class LambdaFunction(Resource):
         return json.loads(response["Payload"].read().decode("utf-8"))
 
 
-
-
-
 @define(kw_only=True, slots=False)
 class AwsInstanceLaunchTemplate(Resource):
     name: str
     group: ResourceGroup
-    version: str
-    image_id: str
+    _dependencies: list = field(default=Factory(list))
+    ami: Optional[str] = None
     instance_type: str
-    key_name: str
-    user_data: str
+    architecture: Union[Literal["x86_64"], Literal["arm64"]]
+    security_groups: List[AwsSecurityGroup] = field(default=Factory(list)),
+    launch_script: Optional[str] = None,
+    version: Optional[str] = None
+    key_pair_name: str = None,
+    instance_role: AwsIamRole
 
     def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
-        self.lt = aws_launch_template.AwsLaunchTemplate(
-            top_name=self.name,
+        self.profile = aws_iam_instance_profile.AwsIamInstanceProfile(
             group=self.group,
-            name=self.name,
-            image_id=self.image_id,
-            instance_type=self.instance_type,
-            key_name=self.key_name,
-            user_data=self.user_data,
+            top_name=self.name + "_instance_profile",
+            name_prefix=self.name,
+            role=self.instance_role.role.ref().name,
         )
 
-        return [self.lt]
+        self.lt = aws_launch_template.AwsLaunchTemplate(
+            group=self.group,
+            top_name=self.name,
+            image_id=self.ami,
+            instance_type=self.instance_type,
+            iam_instance_profile=[aws_launch_template.IamInstanceProfile(
+                group=self.group,
+                name=self.profile.ref().name
+            )],
+            vpc_security_group_ids=[sg.security_group.ref().id for sg in self.security_groups],
+            user_data=Expression(
+                f'base64encode({json.dumps(self.launch_script)})'
+            ) if self.launch_script is not None else None,
+            name=self.name,
+            key_name=self.key_pair_name,
+        )
+
+        return [self.profile, self.lt]
 
     @classmethod
     def from_instance(cls, instance: AwsEc2Instance):
@@ -826,6 +847,15 @@ class VolumeDefinition(TypedDict):
     configuredAtLaunch: bool
     dockerVolumeConfiguration: Dict[str, str]
     # efsVolumeConfiguration: Dict[str, str]
+
+@define(kw_only=True, slots=False)
+class AwsElasticFileSystem(Resource):
+    name: str
+    group: ResourceGroup
+
+    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
+        
+        pass
 
 @define(kw_only=True, slots=False)
 class AwsEcsTaskDefinition(Resource):

@@ -2,11 +2,13 @@ import asyncio
 import json
 from pathlib import Path
 import shutil
+from hangar_sdk.resources.terraform.aws import data_aws_ami
 
 import pytest
 
 from hangar_sdk.core.blocks.aws_blocks import (
     AwsSecurityGroup,
+    AwsVolume,
     Egress,
     Ingress,
     AwsSubnet,
@@ -45,46 +47,38 @@ def file_setup():
 def test_ec2_instance():
     group = ResourceGroup(name="hello", region="us-west-1", terraform_excecutable="/opt/homebrew/bin/terraform")
 
+    task_role = AwsIamRole(
+        name="test-ecs-role",
+        group=group,
+        managed_policy_arns=["arn:aws:iam::aws:policy/AdministratorAccess", "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"],
+        assume_role_policy={
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Action": "sts:AssumeRole",
+                    "Principal": {"Service": ["ecs.amazonaws.com", "ecs-tasks.amazonaws.com", "ecs.application-autoscaling.amazonaws.com", "ec2.amazonaws.com"]},
+                    "Effect": "Allow",
+                }
+            ],
+        }
+    )
+
     sg = AwsSecurityGroup(
         ingress=[
             Ingress(
-                from_port=22,
-                to_port=22,
-                protocol="TCP",
+                from_port=0,
+                to_port=0,
+                protocol="-1",
                 cidr_blocks=["0.0.0.0/0"],
             ),
-            Ingress(
-                from_port=80,
-                to_port=80,
-                protocol="TCP",
-                cidr_blocks=["0.0.0.0/0"],
-            ),
-            Ingress(
-                from_port=443,
-                to_port=443,
-                protocol="TCP",
-                cidr_blocks=["0.0.0.0/0"],
-            )
         ],
         egress=[
             Egress(
-                from_port=22,
-                to_port=22,
-                protocol="TCP",
+                from_port=0,
+                to_port=0,
+                protocol="-1",
                 cidr_blocks=["0.0.0.0/0"],
             ),
-            Egress(
-                from_port=80,
-                to_port=80,
-                protocol="TCP",
-                cidr_blocks=["0.0.0.0/0"],
-            ),
-            Egress(
-                from_port=443,
-                to_port=443,
-                protocol="TCP",
-                cidr_blocks=["0.0.0.0/0"],
-            )
         ],
         name="hangar-e2e",
         group=group,
@@ -92,11 +86,13 @@ def test_ec2_instance():
 
     default = DefaultAwsVpc(name="default", group=group, tags={})
 
+    az = "us-west-1a"
+
     subnet = AwsSubnet(
         name="subnet-a",
         group=group,
         vpc=default,
-        availability_zone="us-west-1a",
+        availability_zone=az,
         cidr_block="172.31.32.0/20",
         tags={},
     )
@@ -110,17 +106,45 @@ def test_ec2_instance():
         tags={},
     )
 
-    instance = AwsEc2Instance(
+    ecs_ami = data_aws_ami.DataAwsAmi(
+        top_name="ecs_ami",
+        group=group,
+        filter=[
+            data_aws_ami.Filter(
+                name="name",
+                group=group,
+                values=["amzn2-ami-ecs-hvm-2.0.20231103-x86_64-ebs"],
+            ),
+            data_aws_ami.Filter(
+                group=group,
+                name="architecture",
+                values=["x86_64"],
+            ),
+        ],
+    )
+
+    group.buffer.add(ecs_ami)
+
+    cluster_name = "test_cluster"
+
+    volume = AwsVolume(
+        name="test_volume",
+        group=group,
+        availibilty_zone=az,
+        size=200
+    )
+
+    launch_template = AwsInstanceLaunchTemplate(
         security_groups=[sg],
+        ami=ecs_ami.ref().id,
         instance_type="t2.micro",
         name="test-instance",
         group=group,
-        architecture="x86_64",
-        tags={},
-        subnet=subnet
+        architecture="X86_64",
+        launch_script=f"#!/bin/bash\necho ECS_CLUSTER={cluster_name} >> /etc/ecs/ecs.config",
+        key_pair_name="wooooo",
+        instance_role=task_role
     )
-
-    launch_template = AwsInstanceLaunchTemplate.from_instance(instance)
 
     target_group = AwsLbTargetGroup(
         name="test-targetgroup",
@@ -136,6 +160,15 @@ def test_ec2_instance():
         group=group,
         securityGroups=[sg],
         subnets=[subnet, subnet2]
+    )
+
+    lb_listener = AwsLbListener(
+        name="listener",
+        group=group,
+        load_balancer=lb,
+        port=80,
+        protocol="HTTP",
+        target_group=target_group
     )
 
     autoscaler = InstanceAutoScaler(
@@ -157,7 +190,7 @@ def test_ec2_instance():
     )
 
     cluster = AwsEcsCluster(
-        name="test_cluster",
+        name=cluster_name,
         group=group,
         capacity_providers=[capacity_provider]
     )
@@ -166,6 +199,7 @@ def test_ec2_instance():
         name="some_container",
         image="public.ecr.aws/nginx/nginx:stable",
         cpu=512,
+        memory=512,
         portMappings=[
             PortMapping(
                 containerPort=80,
@@ -176,29 +210,8 @@ def test_ec2_instance():
                 containerPort=443,
                 appProtocol="http",
                 hostPort=443
-            ),
-            PortMapping(
-                containerPort=22,
-                appProtocol="http",
-                hostPort=22
             )
         ]
-    )
-
-    task_role = AwsIamRole(
-        name="test-ecs-role",
-        group=group,
-        managed_policy_arns=["arn:aws:iam::aws:policy/AdministratorAccess"],
-        assume_role_policy={
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Action": "sts:AssumeRole",
-                    "Principal": {"Service": "ecs.amazonaws.com"},
-                    "Effect": "Allow",
-                }
-            ],
-        }
     )
 
     task = AwsEcsTaskDefinition(
@@ -209,8 +222,8 @@ def test_ec2_instance():
         task_role=task_role,
         execution_role=task_role,
         network_mode="bridge",
-        cpu="1024",
-        memory="2048",
+        cpu="512",
+        memory="512",
         container_definitions=[cd]
     )
 
