@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_iotfleetwise_privilege_type = Union[Literal["ListDecoderManifestSignals"], Literal["CreateModelManifest"], Literal["DeleteSignalCatalog"], Literal["CreateSignalCatalog"], Literal["PutEncryptionConfiguration"], Literal["CreateCampaign"], Literal["UntagResource"], Literal["GetEncryptionConfiguration"], Literal["GetSignalCatalog"], Literal["GetLoggingOptions"], Literal["ListCampaigns"], Literal["ListDecoderManifestNetworkInterfaces"], Literal["ListSignalCatalogs"], Literal["ListModelManifests"], Literal["UpdateCampaign"], Literal["CreateDecoderManifest"], Literal["DeleteFleet"], Literal["UpdateVehicle"], Literal["BatchUpdateVehicle"], Literal["GetDecoderManifest"], Literal["UpdateModelManifest"], Literal["UpdateSignalCatalog"], Literal["GetVehicleStatus"], Literal["ListTagsForResource"], Literal["CreateVehicle"], Literal["AssociateVehicleFleet"], Literal["DeleteModelManifest"], Literal["GetVehicle"], Literal["ListFleets"], Literal["DeleteVehicle"], Literal["ListFleetsForVehicle"], Literal["ListVehicles"], Literal["BatchCreateVehicle"], Literal["GetRegisterAccountStatus"], Literal["DisassociateVehicleFleet"], Literal["GetFleet"], Literal["ListSignalCatalogNodes"], Literal["PutLoggingOptions"], Literal["DeleteCampaign"], Literal["RegisterAccount"], Literal["GetModelManifest"], Literal["TagResource"], Literal["DeleteDecoderManifest"], Literal["GetCampaign"], Literal["ListVehiclesInFleet"], Literal["ImportDecoderManifest"], Literal["UpdateDecoderManifest"], Literal["UpdateFleet"], Literal["ImportSignalCatalog"], Literal["ListModelManifestNodes"], Literal["ListDecoderManifests"], Literal["CreateFleet"]]
+aws_iotfleetwise_condition_type = Union[Literal["aws:TagKeys"], Literal["iotfleetwise:UpdateToDecoderManifestArn"], Literal["iotfleetwise:DestinationArn"], Literal["iotfleetwise:UpdateToModelManifestArn"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_iotfleetwiseStatement(GenericResourceType[aws_iotfleetwise_privilege_type, aws_iotfleetwise_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

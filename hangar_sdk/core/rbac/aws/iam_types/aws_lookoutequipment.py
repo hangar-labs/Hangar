@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_lookoutequipment_privilege_type = Union[Literal["DescribeLabelGroup"], Literal["UntagResource"], Literal["ListLabels"], Literal["DescribeInferenceScheduler"], Literal["ListInferenceSchedulers"], Literal["DescribeDataIngestionJob"], Literal["CreateInferenceScheduler"], Literal["CreateLabel"], Literal["DescribeDataset"], Literal["Describelabel"], Literal["StartDataIngestionJob"], Literal["UpdateActiveModelVersion"], Literal["UpdateInferenceScheduler"], Literal["CreateModel"], Literal["DeleteRetrainingScheduler"], Literal["UpdateRetrainingScheduler"], Literal["DeleteInferenceScheduler"], Literal["DescribeRetrainingScheduler"], Literal["StartRetrainingScheduler"], Literal["DescribeResourcePolicy"], Literal["DescribeModel"], Literal["ListInferenceEvents"], Literal["CreateDataset"], Literal["DeleteLabel"], Literal["ListDataIngestionJobs"], Literal["ListTagsForResource"], Literal["DeleteLabelGroup"], Literal["ListInferenceExecutions"], Literal["StopInferenceScheduler"], Literal["ImportDataset"], Literal["ListSensorStatistics"], Literal["ListRetrainingSchedulers"], Literal["PutResourcePolicy"], Literal["CreateRetrainingScheduler"], Literal["DeleteModel"], Literal["CreateLabelGroup"], Literal["StopRetrainingScheduler"], Literal["ImportModelVersion"], Literal["ListModelVersions"], Literal["ListDatasets"], Literal["StartInferenceScheduler"], Literal["ListModels"], Literal["ListLabelGroups"], Literal["DeleteResourcePolicy"], Literal["UpdateLabelGroup"], Literal["DescribeModelVersion"], Literal["TagResource"], Literal["UpdateModel"], Literal["DeleteDataset"]]
+aws_lookoutequipment_condition_type = Union[Literal["aws:TagKeys"], Literal["lookoutequipment:IsImportingData"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_lookoutequipmentStatement(GenericResourceType[aws_lookoutequipment_privilege_type, aws_lookoutequipment_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

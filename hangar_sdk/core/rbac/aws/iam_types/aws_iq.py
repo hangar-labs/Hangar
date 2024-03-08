@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_iq_privilege_type = Union[Literal["CreateProject"], Literal["LinkAwsCertification"], Literal["GetRequest"], Literal["DeleteAttachment"], Literal["GetConversation"], Literal["ListProposals"], Literal["UnarchiveConversation"], Literal["GetListing"], Literal["ListAttachments"], Literal["MarkChatMessageRead"], Literal["DownloadAttachment"], Literal["ListConversations"], Literal["CreateUpfrontProposal"], Literal["ListListings"], Literal["CreateExpert"], Literal["DisableIndividualPublicProfile"], Literal["ListRequests"], Literal["ListExpertAccessLogs"], Literal["ApproveProposal"], Literal["SendCompanyChatMessage"], Literal["GetChatToken"], Literal["UpdateExpert"], Literal["SendIndividualChatMessage"], Literal["CreateScheduledProposal"], Literal["GetChatMessages"], Literal["GetPaymentRequest"], Literal["CompleteProposal"], Literal["EndCall"], Literal["AcceptCall"], Literal["UpdateRequest"], Literal["GetBuyer"], Literal["UnlinkAwsCertification"], Literal["WriteReview"], Literal["CreateListing"], Literal["GetCall"], Literal["GetCompanyProfile"], Literal["UpdateConversationMembers"], Literal["InitiateCall"], Literal["GetCompanyChatMessages"], Literal["ApprovePaymentRequest"], Literal["CreateRequest"], Literal["CreateSeller"], Literal["WithdrawProposal"], Literal["GetMarketplaceSeller"], Literal["GetExpert"], Literal["GetProposal"], Literal["UpdateCompanyProfile"], Literal["ListReviews"], Literal["UploadAttachment"], Literal["ArchiveConversation"], Literal["EnableIndividualPublicProfile"], Literal["GetReview"], Literal["CreateConversation"], Literal["UpdateListing"], Literal["CreatePaymentRequest"], Literal["DeclineCall"], Literal["RejectProposal"], Literal["CreateMilestoneProposal"], Literal["HideRequest"], Literal["WithdrawPaymentRequest"], Literal["GetChatInfo"], Literal["RejectPaymentRequest"], Literal["ListPaymentRequests"]]
+aws_iq_condition_type = None
+
+class aws_iqStatement(GenericResourceType[aws_iq_privilege_type, aws_iq_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

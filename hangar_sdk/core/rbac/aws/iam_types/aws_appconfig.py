@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_appconfig_privilege_type = Union[Literal["StopDeployment"], Literal["UntagResource"], Literal["ListEnvironments"], Literal["ListConfigurationProfiles"], Literal["DeleteConfigurationProfile"], Literal["DeleteExtensionAssociation"], Literal["GetDeploymentStrategy"], Literal["GetExtension"], Literal["CreateEnvironment"], Literal["DeleteEnvironment"], Literal["GetLatestConfiguration"], Literal["ListExtensions"], Literal["UpdateExtension"], Literal["ValidateConfiguration"], Literal["CreateDeploymentStrategy"], Literal["CreateApplication"], Literal["GetExtensionAssociation"], Literal["ListHostedConfigurationVersions"], Literal["GetConfiguration"], Literal["UpdateApplication"], Literal["GetEnvironment"], Literal["UpdateExtensionAssociation"], Literal["CreateHostedConfigurationVersion"], Literal["GetConfigurationProfile"], Literal["DeleteExtension"], Literal["GetHostedConfigurationVersion"], Literal["ListTagsForResource"], Literal["UpdateDeploymentStrategy"], Literal["StartDeployment"], Literal["CreateConfigurationProfile"], Literal["UpdateEnvironment"], Literal["ListDeploymentStrategies"], Literal["UpdateConfigurationProfile"], Literal["DeleteApplication"], Literal["ListApplications"], Literal["CreateExtensionAssociation"], Literal["GetApplication"], Literal["GetDeployment"], Literal["ListDeployments"], Literal["DeleteDeploymentStrategy"], Literal["CreateExtension"], Literal["ListExtensionAssociations"], Literal["StartConfigurationSession"], Literal["TagResource"], Literal["DeleteHostedConfigurationVersion"]]
+aws_appconfig_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:ResourceTag/${TagKey}"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_appconfigStatement(GenericResourceType[aws_appconfig_privilege_type, aws_appconfig_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

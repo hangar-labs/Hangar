@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_aws_marketplace_privilege_type = Union[Literal["AcceptAgreementRequest"], Literal["UntagResource"], Literal["ListTasks"], Literal["PutDeploymentParameter"], Literal["ResolveCustomer"], Literal["AssociateProductsWithPrivateMarketplace"], Literal["ListPrivateMarketplaceRequests"], Literal["DescribeChangeSet"], Literal["PutProcurementSystemConfiguration"], Literal["CreateAgreementRequest"], Literal["StartChangeSet"], Literal["DescribeTask"], Literal["RejectAgreementApprovalRequest"], Literal["GetEntitlements"], Literal["GetSellerDashboard"], Literal["ListAgreementApprovalRequests"], Literal["SearchAgreements"], Literal["DisassociateProductsFromPrivateMarketplace"], Literal["ListEntities"], Literal["ListBuilds"], Literal["CancelChangeSet"], Literal["CancelAgreementRequest"], Literal["GetAgreementRequest"], Literal["ListTagsForResource"], Literal["UpdateAgreementApprovalRequest"], Literal["DescribeEntity"], Literal["Unsubscribe"], Literal["ListEntitlementDetails"], Literal["GetAgreementApprovalRequest"], Literal["ListPrivateListings"], Literal["CreatePrivateMarketplaceRequests"], Literal["StartBuild"], Literal["CancelAgreement"], Literal["BatchMeterUsage"], Literal["DescribePrivateMarketplaceRequests"], Literal["PutResourcePolicy"], Literal["MeterUsage"], Literal["AcceptAgreementApprovalRequest"], Literal["CompleteTask"], Literal["UpdateTask"], Literal["DescribeAgreement"], Literal["ListChangeSets"], Literal["Subscribe"], Literal["GetAgreementTerms"], Literal["DeleteResourcePolicy"], Literal["TagResource"], Literal["DescribeProcurementSystemConfiguration"], Literal["ViewSubscriptions"], Literal["RegisterUsage"], Literal["ListAgreementRequests"], Literal["DescribeBuilds"], Literal["GetResourcePolicy"]]
+aws_aws_marketplace_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:ResourceTag/${TagKey}"], Literal["catalog:ChangeType"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_aws_marketplaceStatement(GenericResourceType[aws_aws_marketplace_privilege_type, aws_aws_marketplace_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

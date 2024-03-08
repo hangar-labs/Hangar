@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_inspector2_privilege_type = Union[Literal["AssociateMember"], Literal["BatchGetCodeSnippet"], Literal["ListCoverageStatistics"], Literal["GetDelegatedAdminAccount"], Literal["UntagResource"], Literal["DisableDelegatedAdminAccount"], Literal["DescribeOrganizationConfiguration"], Literal["ListMembers"], Literal["GetSbomExport"], Literal["Enable"], Literal["ListFilters"], Literal["BatchGetAccountStatus"], Literal["GetEc2DeepInspectionConfiguration"], Literal["ListAccountPermissions"], Literal["DisassociateMember"], Literal["ResetEncryptionKey"], Literal["Disable"], Literal["BatchGetMemberEc2DeepInspectionStatus"], Literal["GetConfiguration"], Literal["CreateFilter"], Literal["ListDelegatedAdminAccounts"], Literal["CancelSbomExport"], Literal["EnableDelegatedAdminAccount"], Literal["ListTagsForResource"], Literal["ListFindingAggregations"], Literal["DeleteFilter"], Literal["CreateFindingsReport"], Literal["BatchUpdateMemberEc2DeepInspectionStatus"], Literal["BatchGetFreeTrialInfo"], Literal["UpdateOrgEc2DeepInspectionConfiguration"], Literal["UpdateConfiguration"], Literal["UpdateEc2DeepInspectionConfiguration"], Literal["ListCoverage"], Literal["GetMember"], Literal["CreateSbomExport"], Literal["ListUsageTotals"], Literal["UpdateEncryptionKey"], Literal["ListFindings"], Literal["SearchVulnerabilities"], Literal["UpdateFilter"], Literal["CancelFindingsReport"], Literal["TagResource"], Literal["GetFindingsReportStatus"], Literal["UpdateOrganizationConfiguration"], Literal["GetEncryptionKey"], Literal["BatchGetFindingDetails"]]
+aws_inspector2_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:ResourceTag/${TagKey}"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_inspector2Statement(GenericResourceType[aws_inspector2_privilege_type, aws_inspector2_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

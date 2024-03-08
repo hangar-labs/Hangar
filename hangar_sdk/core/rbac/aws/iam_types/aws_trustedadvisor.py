@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_trustedadvisor_privilege_type = Union[Literal["CreateEngagementAttachment"], Literal["DescribeNotificationConfigurations"], Literal["ListOrganizationRecommendationAccounts"], Literal["ListEngagementCommunications"], Literal["DescribeNotificationPreferences"], Literal["ListOrganizationRecommendations"], Literal["UpdateEngagement"], Literal["ListRecommendationResources"], Literal["RefreshCheck"], Literal["DescribeRisk"], Literal["GetEngagement"], Literal["ListAccountsForParent"], Literal["DeleteNotificationConfigurationForDelegatedAdmin"], Literal["SetOrganizationAccess"], Literal["CreateEngagementCommunication"], Literal["GetEngagementAttachment"], Literal["GetRecommendation"], Literal["ListChecks"], Literal["IncludeCheckItems"], Literal["GetEngagementType"], Literal["ListEngagements"], Literal["UpdateRecommendationLifecycle"], Literal["DescribeOrganizationAccounts"], Literal["DescribeRiskResources"], Literal["SetAccountAccess"], Literal["GenerateReport"], Literal["UpdateRiskStatus"], Literal["ListOrganizationRecommendationResources"], Literal["DescribeCheckRefreshStatuses"], Literal["UpdateOrganizationRecommendationLifecycle"], Literal["DescribeCheckItems"], Literal["ListEngagementTypes"], Literal["ListRecommendations"], Literal["DescribeAccountAccess"], Literal["CreateEngagement"], Literal["DescribeCheckSummaries"], Literal["ExcludeCheckItems"], Literal["DescribeChecks"], Literal["DescribeCheckStatusHistoryChanges"], Literal["DescribeServiceMetadata"], Literal["DownloadRisk"], Literal["ListRoots"], Literal["UpdateNotificationConfigurations"], Literal["DescribeReports"], Literal["GetOrganizationRecommendation"], Literal["UpdateEngagementStatus"], Literal["DescribeOrganization"], Literal["UpdateNotificationPreferences"], Literal["DescribeAccount"], Literal["ListOrganizationalUnitsForParent"], Literal["DescribeRisks"]]
+aws_trustedadvisor_condition_type = None
+
+class aws_trustedadvisorStatement(GenericResourceType[aws_trustedadvisor_privilege_type, aws_trustedadvisor_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

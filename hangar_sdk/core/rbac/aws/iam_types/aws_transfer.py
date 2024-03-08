@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_transfer_privilege_type = Union[Literal["ImportSshPublicKey"], Literal["UpdateHostKey"], Literal["DescribeConnector"], Literal["UpdateAccess"], Literal["TestConnection"], Literal["DeleteHostKey"], Literal["UntagResource"], Literal["UpdateConnector"], Literal["CreateConnector"], Literal["CreateUser"], Literal["StartFileTransfer"], Literal["ImportCertificate"], Literal["ListWorkflows"], Literal["ListAgreements"], Literal["ListSecurityPolicies"], Literal["ListUsers"], Literal["CreateServer"], Literal["ListHostKeys"], Literal["DeleteProfile"], Literal["ImportHostKey"], Literal["TestIdentityProvider"], Literal["DeleteServer"], Literal["SendWorkflowStepState"], Literal["DeleteWorkflow"], Literal["UpdateProfile"], Literal["ListTagsForResource"], Literal["UpdateAgreement"], Literal["DeleteCertificate"], Literal["DescribeServer"], Literal["DescribeExecution"], Literal["CreateAgreement"], Literal["StopServer"], Literal["DeleteAgreement"], Literal["DescribeWorkflow"], Literal["ListServers"], Literal["DeleteConnector"], Literal["ListExecutions"], Literal["DescribeUser"], Literal["UpdateServer"], Literal["CreateProfile"], Literal["ListCertificates"], Literal["DeleteAccess"], Literal["DescribeAgreement"], Literal["CreateAccess"], Literal["ListConnectors"], Literal["DescribeSecurityPolicy"], Literal["DescribeProfile"], Literal["DeleteSshPublicKey"], Literal["DescribeAccess"], Literal["DescribeHostKey"], Literal["StartServer"], Literal["TagResource"], Literal["UpdateCertificate"], Literal["CreateWorkflow"], Literal["ListProfiles"], Literal["UpdateUser"], Literal["DeleteUser"], Literal["ListAccesses"], Literal["DescribeCertificate"]]
+aws_transfer_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_transferStatement(GenericResourceType[aws_transfer_privilege_type, aws_transfer_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

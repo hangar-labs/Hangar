@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_kafka_privilege_type = Union[Literal["DescribeConfigurationRevision"], Literal["ListConfigurations"], Literal["DescribeClusterOperation"], Literal["GetClusterPolicy"], Literal["PutClusterPolicy"], Literal["CreateClusterV2"], Literal["UpdateBrokerStorage"], Literal["DeleteCluster"], Literal["GetBootstrapBrokers"], Literal["UntagResource"], Literal["UpdateBrokerCount"], Literal["DescribeClusterOperationV2"], Literal["ListClusterOperations"], Literal["UpdateClusterConfiguration"], Literal["UpdateReplicationInfo"], Literal["UpdateStorage"], Literal["RejectClientVpcConnection"], Literal["ListNodes"], Literal["GetCompatibleKafkaVersions"], Literal["DeleteVpcConnection"], Literal["UpdateMonitoring"], Literal["DescribeClusterV2"], Literal["UpdateSecurity"], Literal["ListKafkaVersions"], Literal["ListClusterOperationsV2"], Literal["CreateConfiguration"], Literal["UpdateClusterKafkaVersion"], Literal["ListScramSecrets"], Literal["ListReplicators"], Literal["ListTagsForResource"], Literal["DeleteClusterPolicy"], Literal["DescribeCluster"], Literal["DescribeReplicator"], Literal["CreateReplicator"], Literal["ListConfigurationRevisions"], Literal["UpdateConfiguration"], Literal["ListVpcConnections"], Literal["UpdateBrokerType"], Literal["BatchDisassociateScramSecret"], Literal["DeleteConfiguration"], Literal["CreateVpcConnection"], Literal["DeleteReplicator"], Literal["BatchAssociateScramSecret"], Literal["CreateCluster"], Literal["DescribeVpcConnection"], Literal["ListClientVpcConnections"], Literal["DescribeConfiguration"], Literal["TagResource"], Literal["UpdateConnectivity"], Literal["ListClustersV2"], Literal["ListClusters"], Literal["RebootBroker"]]
+aws_kafka_condition_type = Union[Literal["aws:TagKeys"], Literal["kafka:publicAccessEnabled"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_kafkaStatement(GenericResourceType[aws_kafka_privilege_type, aws_kafka_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

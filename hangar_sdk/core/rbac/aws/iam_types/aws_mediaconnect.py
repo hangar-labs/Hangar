@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_mediaconnect_privilege_type = Union[Literal["UpdateGatewayInstance"], Literal["UntagResource"], Literal["DescribeFlow"], Literal["DiscoverGatewayPollEndpoint"], Literal["UpdateBridge"], Literal["UpdateBridgeOutput"], Literal["UpdateFlowSource"], Literal["AddFlowSources"], Literal["DeleteFlow"], Literal["AddFlowVpcInterfaces"], Literal["DeregisterGatewayInstance"], Literal["RemoveFlowSource"], Literal["DescribeReservation"], Literal["UpdateBridgeState"], Literal["UpdateBridgeSource"], Literal["CreateBridge"], Literal["DescribeOffering"], Literal["RemoveBridgeSource"], Literal["PurchaseOffering"], Literal["ListReservations"], Literal["ListTagsForResource"], Literal["AddBridgeSources"], Literal["CreateGateway"], Literal["StopFlow"], Literal["RemoveFlowVpcInterface"], Literal["ListGatewayInstances"], Literal["RemoveFlowOutput"], Literal["DescribeBridge"], Literal["RemoveFlowMediaStream"], Literal["AddBridgeOutputs"], Literal["RevokeFlowEntitlement"], Literal["StartFlow"], Literal["UpdateFlowEntitlement"], Literal["DeleteBridge"], Literal["DescribeGateway"], Literal["UpdateFlowOutput"], Literal["UpdateFlowMediaStream"], Literal["DeleteGateway"], Literal["ListGateways"], Literal["ListEntitlements"], Literal["ListFlows"], Literal["ListOfferings"], Literal["GrantFlowEntitlements"], Literal["DescribeGatewayInstance"], Literal["SubmitGatewayStateChange"], Literal["AddFlowOutputs"], Literal["AddFlowMediaStreams"], Literal["RemoveBridgeOutput"], Literal["TagResource"], Literal["ListBridges"], Literal["CreateFlow"], Literal["PollGateway"], Literal["UpdateFlow"]]
+aws_mediaconnect_condition_type = None
+
+class aws_mediaconnectStatement(GenericResourceType[aws_mediaconnect_privilege_type, aws_mediaconnect_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

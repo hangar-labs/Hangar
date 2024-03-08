@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_sso_directory_privilege_type = Union[Literal["UpdateMfaDeviceForUser"], Literal["DeleteExternalIdPCertificate"], Literal["ListMfaDevicesForUser"], Literal["UpdateGroup"], Literal["AddMemberToGroup"], Literal["DisableUser"], Literal["UpdatePassword"], Literal["CreateUser"], Literal["VerifyEmail"], Literal["GetAWSSPConfigurationForDirectory"], Literal["DescribeUserByUniqueAttribute"], Literal["EnableExternalIdPConfigurationForDirectory"], Literal["DeleteBearerToken"], Literal["CreateBearerToken"], Literal["ListMembersInGroup"], Literal["DeleteExternalIdPConfigurationForDirectory"], Literal["SearchUsers"], Literal["DescribeProvisioningTenant"], Literal["ListProvisioningTenants"], Literal["UpdateExternalIdPConfigurationForDirectory"], Literal["ListExternalIdPCertificates"], Literal["CreateProvisioningTenant"], Literal["CreateGroup"], Literal["StartWebAuthnDeviceRegistration"], Literal["UpdateUserName"], Literal["CompleteWebAuthnDeviceRegistration"], Literal["DisableExternalIdPConfigurationForDirectory"], Literal["DescribeGroups"], Literal["SearchGroups"], Literal["DeleteProvisioningTenant"], Literal["DeleteMfaDeviceForUser"], Literal["GetUserPoolInfo"], Literal["UpdateGroupDisplayName"], Literal["EnableUser"], Literal["CreateAlias"], Literal["DescribeUser"], Literal["ImportExternalIdPCertificate"], Literal["DescribeDirectory"], Literal["ListBearerTokens"], Literal["RemoveMemberFromGroup"], Literal["DescribeGroup"], Literal["StartVirtualMfaDeviceRegistration"], Literal["CreateExternalIdPConfigurationForDirectory"], Literal["DeleteGroup"], Literal["DescribeUsers"], Literal["ListExternalIdPConfigurationsForDirectory"], Literal["ListGroupsForMember"], Literal["UpdateUser"], Literal["ListGroupsForUser"], Literal["DeleteUser"], Literal["IsMemberInGroup"], Literal["CompleteVirtualMfaDeviceRegistration"]]
+aws_sso_directory_condition_type = None
+
+class aws_sso_directoryStatement(GenericResourceType[aws_sso_directory_privilege_type, aws_sso_directory_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

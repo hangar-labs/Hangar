@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_ivs_privilege_type = Union[Literal["GetPlaybackKeyPair"], Literal["StartComposition"], Literal["UntagResource"], Literal["DeleteEncoderConfiguration"], Literal["UpdateChannel"], Literal["ListParticipants"], Literal["StopComposition"], Literal["CreateChannel"], Literal["DisconnectParticipant"], Literal["DeletePlaybackKeyPair"], Literal["ListParticipantEvents"], Literal["GetStorageConfiguration"], Literal["GetParticipant"], Literal["CreateStreamKey"], Literal["GetStreamSession"], Literal["GetStage"], Literal["ListChannels"], Literal["DeleteStorageConfiguration"], Literal["CreateRecordingConfiguration"], Literal["StopStream"], Literal["DeleteRecordingConfiguration"], Literal["ListEncoderConfigurations"], Literal["ListPlaybackKeyPairs"], Literal["GetStreamKey"], Literal["PutMetadata"], Literal["StartViewerSessionRevocation"], Literal["ListTagsForResource"], Literal["CreateStorageConfiguration"], Literal["BatchGetChannel"], Literal["ListCompositions"], Literal["CreateParticipantToken"], Literal["ListStageSessions"], Literal["ListStreams"], Literal["GetChannel"], Literal["GetRecordingConfiguration"], Literal["ListStreamKeys"], Literal["UpdateStage"], Literal["ListStages"], Literal["DeleteStage"], Literal["DeleteStreamKey"], Literal["GetStream"], Literal["GetStageSession"], Literal["CreateEncoderConfiguration"], Literal["GetComposition"], Literal["ListStorageConfigurations"], Literal["ListStreamSessions"], Literal["CreateStage"], Literal["ImportPlaybackKeyPair"], Literal["TagResource"], Literal["BatchStartViewerSessionRevocation"], Literal["GetEncoderConfiguration"], Literal["DeleteChannel"], Literal["BatchGetStreamKey"], Literal["ListRecordingConfigurations"]]
+aws_ivs_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_ivsStatement(GenericResourceType[aws_ivs_privilege_type, aws_ivs_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

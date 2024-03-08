@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_ecr_privilege_type = Union[Literal["DeletePullThroughCacheRule"], Literal["ValidatePullThroughCacheRule"], Literal["PutReplicationConfiguration"], Literal["ReplicateImage"], Literal["UntagResource"], Literal["GetDownloadUrlForLayer"], Literal["UploadLayerPart"], Literal["GetAuthorizationToken"], Literal["PutImageScanningConfiguration"], Literal["DescribeRegistry"], Literal["CreatePullThroughCacheRule"], Literal["PutRegistryScanningConfiguration"], Literal["InitiateLayerUpload"], Literal["CreateRepository"], Literal["GetLifecyclePolicy"], Literal["PutRegistryPolicy"], Literal["BatchDeleteImage"], Literal["BatchGetRepositoryScanningConfiguration"], Literal["BatchCheckLayerAvailability"], Literal["DescribeRepositories"], Literal["DescribePullThroughCacheRules"], Literal["ListTagsForResource"], Literal["GetRegistryScanningConfiguration"], Literal["BatchImportUpstreamImage"], Literal["DeleteRepositoryCreationTemplate"], Literal["GetRegistryPolicy"], Literal["DeleteLifecyclePolicy"], Literal["DescribeImageScanFindings"], Literal["DescribeImages"], Literal["CompleteLayerUpload"], Literal["DescribeImageReplicationStatus"], Literal["GetLifecyclePolicyPreview"], Literal["GetRepositoryPolicy"], Literal["DescribeRepositoryCreationTemplate"], Literal["UpdatePullThroughCacheRule"], Literal["BatchGetImage"], Literal["PutImageTagMutability"], Literal["StartLifecyclePolicyPreview"], Literal["ListImages"], Literal["CreateRepositoryCreationTemplate"], Literal["DeleteRegistryPolicy"], Literal["SetRepositoryPolicy"], Literal["TagResource"], Literal["DeleteRepository"], Literal["DeleteRepositoryPolicy"], Literal["StartImageScan"], Literal["PutLifecyclePolicy"], Literal["PutImage"]]
+aws_ecr_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_ecrStatement(GenericResourceType[aws_ecr_privilege_type, aws_ecr_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

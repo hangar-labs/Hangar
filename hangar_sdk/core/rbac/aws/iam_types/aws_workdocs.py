@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_workdocs_privilege_type = Union[Literal["RemoveResourcePermission"], Literal["UpdateUserAdministrativeSettings"], Literal["AbortDocumentVersionUpload"], Literal["AddResourcePermissions"], Literal["DescribeRootFolders"], Literal["CreateLabels"], Literal["DeleteInstance"], Literal["DescribeComments"], Literal["DescribeDocumentVersions"], Literal["DownloadDocumentVersion"], Literal["CreateUser"], Literal["RemoveAllResourcePermissions"], Literal["UpdateDocument"], Literal["GetDocument"], Literal["GetGroup"], Literal["InitiateDocumentVersionUpload"], Literal["GetFolder"], Literal["CreateNotificationSubscription"], Literal["DeleteFolderContents"], Literal["DescribeNotificationSubscriptions"], Literal["ActivateUser"], Literal["DescribeFolderContents"], Literal["DeleteNotificationPermissions"], Literal["SearchResources"], Literal["DeleteLabels"], Literal["CreateComment"], Literal["GetDocumentVersion"], Literal["GetCurrentUser"], Literal["DescribeActivities"], Literal["UpdateInstanceAlias"], Literal["UpdateDocumentVersion"], Literal["DeleteNotificationSubscription"], Literal["DeleteDocumentVersion"], Literal["DeleteCustomMetadata"], Literal["DescribeGroups"], Literal["DeleteDocument"], Literal["DescribeInstances"], Literal["GetDocumentPath"], Literal["GetFolderPath"], Literal["UpdateFolder"], Literal["DescribeNotificationPermissions"], Literal["DeregisterDirectory"], Literal["CreateFolder"], Literal["AddUserToGroup"], Literal["DeactivateUser"], Literal["GetResources"], Literal["DeleteComment"], Literal["CreateInstance"], Literal["DescribeAvailableDirectories"], Literal["AddNotificationPermissions"], Literal["DescribeResourcePermissions"], Literal["RegisterDirectory"], Literal["DescribeUsers"], Literal["UpdateUser"], Literal["CheckAlias"], Literal["DeleteFolder"], Literal["DeleteUser"], Literal["CreateCustomMetadata"], Literal["RestoreDocumentVersions"]]
+aws_workdocs_condition_type = None
+
+class aws_workdocsStatement(GenericResourceType[aws_workdocs_privilege_type, aws_workdocs_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

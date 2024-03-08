@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_qbusiness_privilege_type = Union[Literal["ListDataSourceSyncJobs"], Literal["UntagResource"], Literal["CreateWebExperience"], Literal["RemoveUserLicenses"], Literal["CreateUser"], Literal["ListPlugins"], Literal["CreateRetriever"], Literal["CreateLicense"], Literal["DeleteConversation"], Literal["PutFeedback"], Literal["ListConversations"], Literal["ListRetrievers"], Literal["CreateIndex"], Literal["GetGroup"], Literal["ListMessages"], Literal["UpdateDataSource"], Literal["UpdateRetriever"], Literal["CreateApplication"], Literal["GetLicense"], Literal["BatchDeleteDocument"], Literal["PutGroup"], Literal["CreatePlugin"], Literal["GetUser"], Literal["DeleteRetriever"], Literal["GetChatControlsConfiguration"], Literal["GetWebExperience"], Literal["GetDataSource"], Literal["ListDataSources"], Literal["ListTagsForResource"], Literal["UpdateApplication"], Literal["UpdateChatControlsConfiguration"], Literal["ListWebExperiences"], Literal["DeleteChatControlsConfiguration"], Literal["ListIndices"], Literal["ListUserLicenses"], Literal["DeleteUser"], Literal["GetIndex"], Literal["ListGroups"], Literal["DeleteApplication"], Literal["DeletePlugin"], Literal["GetPlugin"], Literal["DeleteWebExperience"], Literal["CreateDataSource"], Literal["GetRetriever"], Literal["ListApplications"], Literal["UpdateWebExperience"], Literal["ListDocuments"], Literal["GetApplication"], Literal["DeleteGroup"], Literal["UpdatePlugin"], Literal["StopDataSourceSyncJob"], Literal["TagResource"], Literal["Chat"], Literal["UpdateIndex"], Literal["UpdateUser"], Literal["StartDataSourceSyncJob"], Literal["DeleteDataSource"], Literal["ChatSync"], Literal["DeleteIndex"], Literal["BatchPutDocument"], Literal["AddUserLicenses"]]
+aws_qbusiness_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_qbusinessStatement(GenericResourceType[aws_qbusiness_privilege_type, aws_qbusiness_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

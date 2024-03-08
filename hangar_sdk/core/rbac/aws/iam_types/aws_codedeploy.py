@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_codedeploy_privilege_type = Union[Literal["RegisterApplicationRevision"], Literal["CreateCloudFormationDeployment"], Literal["AddTagsToOnPremisesInstances"], Literal["StopDeployment"], Literal["DeleteDeploymentConfig"], Literal["ListDeploymentGroups"], Literal["ListDeploymentInstances"], Literal["UntagResource"], Literal["BatchGetDeploymentTargets"], Literal["GetDeploymentInstance"], Literal["DeleteGitHubAccountToken"], Literal["DeleteResourcesByExternalId"], Literal["ListOnPremisesInstances"], Literal["GetApplicationRevision"], Literal["BatchGetDeployments"], Literal["PutLifecycleEventHookExecutionStatus"], Literal["ListDeploymentConfigs"], Literal["CreateDeployment"], Literal["CreateApplication"], Literal["BatchGetApplicationRevisions"], Literal["DeleteDeploymentGroup"], Literal["BatchGetDeploymentInstances"], Literal["UpdateApplication"], Literal["ListTagsForResource"], Literal["BatchGetOnPremisesInstances"], Literal["GetDeploymentGroup"], Literal["SkipWaitTimeForInstanceTermination"], Literal["RemoveTagsFromOnPremisesInstances"], Literal["CreateDeploymentGroup"], Literal["BatchGetDeploymentGroups"], Literal["DeregisterOnPremisesInstance"], Literal["ListDeploymentTargets"], Literal["UpdateDeploymentGroup"], Literal["GetOnPremisesInstance"], Literal["DeleteApplication"], Literal["ListApplicationRevisions"], Literal["GetDeploymentTarget"], Literal["ListApplications"], Literal["GetDeploymentConfig"], Literal["GetApplication"], Literal["GetDeployment"], Literal["ListDeployments"], Literal["TagResource"], Literal["CreateDeploymentConfig"], Literal["RegisterOnPremisesInstance"], Literal["ContinueDeployment"], Literal["BatchGetApplications"], Literal["ListGitHubAccountTokenNames"]]
+aws_codedeploy_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_codedeployStatement(GenericResourceType[aws_codedeploy_privilege_type, aws_codedeploy_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

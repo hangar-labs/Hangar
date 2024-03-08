@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_finspace_privilege_type = Union[Literal["DeleteKxUser"], Literal["UpdateKxUser"], Literal["CreateKxDataview"], Literal["ListKxScalingGroups"], Literal["ListEnvironments"], Literal["UntagResource"], Literal["ListKxDatabases"], Literal["CreateKxDatabase"], Literal["CreateUser"], Literal["GetKxVolume"], Literal["GetKxDatabase"], Literal["GetKxUser"], Literal["CreateEnvironment"], Literal["DeleteEnvironment"], Literal["DeleteKxEnvironment"], Literal["CreateKxEnvironment"], Literal["ConnectKxCluster"], Literal["DeleteKxDataview"], Literal["DeleteKxScalingGroup"], Literal["ListKxEnvironments"], Literal["CreateKxVolume"], Literal["ListKxClusterNodes"], Literal["ListUsers"], Literal["UpdateKxClusterCodeConfiguration"], Literal["GetKxDataview"], Literal["LoadSampleDataSetGroupIntoEnvironment"], Literal["GetUser"], Literal["DeleteKxVolume"], Literal["UpdateKxClusterDatabases"], Literal["GetEnvironment"], Literal["CreateKxChangeset"], Literal["UpdateKxDataview"], Literal["ListTagsForResource"], Literal["UpdateKxEnvironmentNetwork"], Literal["GetKxChangeset"], Literal["CreateKxCluster"], Literal["GetKxScalingGroup"], Literal["MountKxDatabase"], Literal["ListKxUsers"], Literal["GetKxEnvironment"], Literal["GetLoadSampleDataSetGroupIntoEnvironmentStatus"], Literal["UpdateKxEnvironment"], Literal["UpdateEnvironment"], Literal["UpdateKxDatabase"], Literal["UpdateKxVolume"], Literal["DeleteKxCluster"], Literal["DeleteKxDatabase"], Literal["GetKxCluster"], Literal["CreateKxUser"], Literal["ListKxDataviews"], Literal["CreateKxScalingGroup"], Literal["ListKxVolumes"], Literal["TagResource"], Literal["ListKxClusters"], Literal["UpdateUser"], Literal["GetKxConnectionString"], Literal["ResetUserPassword"], Literal["ListKxChangesets"]]
+aws_finspace_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_finspaceStatement(GenericResourceType[aws_finspace_privilege_type, aws_finspace_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

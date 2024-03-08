@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_apprunner_privilege_type = Union[Literal["DeleteVpcIngressConnection"], Literal["UpdateVpcIngressConnection"], Literal["UntagResource"], Literal["CreateVpcIngressConnection"], Literal["DeleteVpcConnector"], Literal["DeleteService"], Literal["CreateService"], Literal["ListObservabilityConfigurations"], Literal["DeleteObservabilityConfiguration"], Literal["DescribeOperation"], Literal["CreateConnection"], Literal["DescribeVpcIngressConnection"], Literal["DescribeWebAclForService"], Literal["DescribeCustomDomains"], Literal["ListAutoScalingConfigurations"], Literal["DeleteConnection"], Literal["DisassociateCustomDomain"], Literal["ListVpcIngressConnections"], Literal["ListTagsForResource"], Literal["CreateAutoScalingConfiguration"], Literal["CreateObservabilityConfiguration"], Literal["StartDeployment"], Literal["ListVpcConnectors"], Literal["CreateVpcConnector"], Literal["DescribeVpcConnector"], Literal["UpdateService"], Literal["UpdateDefaultAutoScalingConfiguration"], Literal["ListConnections"], Literal["AssociateWebAcl"], Literal["DescribeService"], Literal["AssociateCustomDomain"], Literal["DeleteAutoScalingConfiguration"], Literal["DisassociateWebAcl"], Literal["ListAssociatedServicesForWebAcl"], Literal["ListOperations"], Literal["ListServices"], Literal["PauseService"], Literal["ResumeService"], Literal["TagResource"], Literal["ListServicesForAutoScalingConfiguration"], Literal["DescribeAutoScalingConfiguration"], Literal["DescribeObservabilityConfiguration"]]
+aws_apprunner_condition_type = Union[Literal["aws:TagKeys"], Literal["apprunner:ObservabilityConfigurationArn"], Literal["apprunner:AutoScalingConfigurationArn"], Literal["apprunner:ConnectionArn"], Literal["apprunner:VpcEndpointId"], Literal["apprunner:ServiceArn"], Literal["apprunner:VpcId"], Literal["apprunner:VpcConnectorArn"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_apprunnerStatement(GenericResourceType[aws_apprunner_privilege_type, aws_apprunner_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

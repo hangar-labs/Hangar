@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_secretsmanager_privilege_type = Union[Literal["UntagResource"], Literal["RestoreSecret"], Literal["GetRandomPassword"], Literal["ReplicateSecretToRegions"], Literal["UpdateSecretVersionStage"], Literal["DescribeSecret"], Literal["ListSecretVersionIds"], Literal["ListSecrets"], Literal["RotateSecret"], Literal["ValidateResourcePolicy"], Literal["RemoveRegionsFromReplication"], Literal["PutSecretValue"], Literal["PutResourcePolicy"], Literal["CreateSecret"], Literal["DeleteSecret"], Literal["BatchGetSecretValue"], Literal["CancelRotateSecret"], Literal["DeleteResourcePolicy"], Literal["TagResource"], Literal["GetSecretValue"], Literal["UpdateSecret"], Literal["StopReplicationToReplica"], Literal["GetResourcePolicy"]]
+aws_secretsmanager_condition_type = Union[Literal["secretsmanager:ModifyRotationRules"], Literal["secretsmanager:AddReplicaRegions"], Literal["secretsmanager:ResourceTag/tag-key"], Literal["aws:TagKeys"], Literal["secretsmanager:ForceDeleteWithoutRecovery"], Literal["secretsmanager:SecretPrimaryRegion"], Literal["secretsmanager:SecretId"], Literal["secretsmanager:RecoveryWindowInDays"], Literal["secretsmanager:resource/AllowRotationLambdaArn"], Literal["secretsmanager:Description"], Literal["secretsmanager:RotationLambdaARN"], Literal["secretsmanager:ForceOverwriteReplicaSecret"], Literal["secretsmanager:KmsKeyId"], Literal["secretsmanager:VersionStage"], Literal["aws:ResourceTag/${TagKey}"], Literal["secretsmanager:BlockPublicPolicy"], Literal["secretsmanager:Name"], Literal["secretsmanager:VersionId"], Literal["secretsmanager:RotateImmediately"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_secretsmanagerStatement(GenericResourceType[aws_secretsmanager_privilege_type, aws_secretsmanager_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

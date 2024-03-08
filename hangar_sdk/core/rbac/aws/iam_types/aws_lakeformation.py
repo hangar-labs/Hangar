@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_lakeformation_privilege_type = Union[Literal["StartTransaction"], Literal["UpdateResource"], Literal["ListLFTags"], Literal["ListResources"], Literal["GetQueryState"], Literal["ListPermissions"], Literal["UpdateTableStorageOptimizer"], Literal["RemoveLFTagsFromResource"], Literal["RegisterResource"], Literal["GetQueryStatistics"], Literal["StartQueryPlanning"], Literal["UpdateTableObjects"], Literal["ExtendTransaction"], Literal["UpdateLFTag"], Literal["GetWorkUnits"], Literal["BatchGrantPermissions"], Literal["ListDataCellsFilter"], Literal["ListTransactions"], Literal["GetResourceLFTags"], Literal["DeleteLFTag"], Literal["GetDataCellsFilter"], Literal["SearchDatabasesByLFTags"], Literal["CommitTransaction"], Literal["CreateLFTag"], Literal["AddLFTagsToResource"], Literal["DeleteObjectsOnCancel"], Literal["DescribeResource"], Literal["CreateLakeFormationOptIn"], Literal["PutDataLakeSettings"], Literal["ListLakeFormationOptIns"], Literal["ListTableStorageOptimizers"], Literal["GetDataLakeSettings"], Literal["UpdateDataCellsFilter"], Literal["GetEffectivePermissionsForPath"], Literal["GetDataAccess"], Literal["DeleteDataCellsFilter"], Literal["GetLFTag"], Literal["RevokePermissions"], Literal["SearchTablesByLFTags"], Literal["BatchRevokePermissions"], Literal["GrantPermissions"], Literal["GetWorkUnitResults"], Literal["DeleteLakeFormationOptIn"], Literal["CreateDataCellsFilter"], Literal["GetTableObjects"], Literal["DescribeTransaction"], Literal["CancelTransaction"], Literal["DeregisterResource"]]
+aws_lakeformation_condition_type = None
+
+class aws_lakeformationStatement(GenericResourceType[aws_lakeformation_privilege_type, aws_lakeformation_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_profile_privilege_type = Union[Literal["DetectProfileObjectType"], Literal["ListDomains"], Literal["UntagResource"], Literal["CreateEventStream"], Literal["MergeProfiles"], Literal["DeleteProfileObject"], Literal["GetProfileObjectTypeTemplate"], Literal["PutProfileObject"], Literal["ListWorkflows"], Literal["PutIntegration"], Literal["GetIdentityResolutionJob"], Literal["UpdateDomain"], Literal["DeleteCalculatedAttributeDefinition"], Literal["DeleteProfile"], Literal["GetIntegration"], Literal["ListAccountIntegrations"], Literal["GetWorkflowSteps"], Literal["ListIdentityResolutionJobs"], Literal["UpdateCalculatedAttributeDefinition"], Literal["DeleteProfileKey"], Literal["DeleteWorkflow"], Literal["CreateDomain"], Literal["ListIntegrations"], Literal["GetAutoMergingPreview"], Literal["GetCalculatedAttributeForProfile"], Literal["ListTagsForResource"], Literal["UpdateProfile"], Literal["DeleteIntegration"], Literal["ListProfileObjectTypes"], Literal["GetDomain"], Literal["CreateCalculatedAttributeDefinition"], Literal["CreateProfile"], Literal["DeleteEventStream"], Literal["GetSimilarProfiles"], Literal["SearchProfiles"], Literal["CreateIntegrationWorkflow"], Literal["ListCalculatedAttributeDefinitions"], Literal["GetProfileObjectType"], Literal["GetCalculatedAttributeDefinition"], Literal["GetEventStream"], Literal["GetMatches"], Literal["GetWorkflow"], Literal["DeleteProfileObjectType"], Literal["ListRuleBasedMatches"], Literal["AddProfileKey"], Literal["DeleteDomain"], Literal["ListProfileObjects"], Literal["ListProfileObjectTypeTemplates"], Literal["TagResource"], Literal["ListCalculatedAttributesForProfile"], Literal["ListEventStreams"], Literal["PutProfileObjectType"]]
+aws_profile_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_profileStatement(GenericResourceType[aws_profile_privilege_type, aws_profile_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

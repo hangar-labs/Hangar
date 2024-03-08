@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_license_manager_privilege_type = Union[Literal["CreateLicenseConversionTaskForResource"], Literal["UpdateLicenseSpecificationsForResource"], Literal["ListTokens"], Literal["CreateLicenseConfiguration"], Literal["UntagResource"], Literal["CheckoutLicense"], Literal["DeleteLicense"], Literal["ExtendLicenseConsumption"], Literal["CreateLicense"], Literal["UpdateServiceSettings"], Literal["CreateGrantVersion"], Literal["GetLicenseConversionTask"], Literal["ListLicenseSpecificationsForResource"], Literal["ListReceivedGrants"], Literal["ListDistributedGrants"], Literal["ListLicenseConfigurations"], Literal["ListUsageForLicenseConfiguration"], Literal["AcceptGrant"], Literal["GetLicense"], Literal["CheckInLicense"], Literal["GetLicenseConfiguration"], Literal["CheckoutBorrowLicense"], Literal["ListAssociationsForLicenseConfiguration"], Literal["CreateGrant"], Literal["GetGrant"], Literal["ListTagsForResource"], Literal["GetLicenseManagerReportGenerator"], Literal["ListReceivedLicenses"], Literal["UpdateLicenseManagerReportGenerator"], Literal["ListReceivedLicensesForOrganization"], Literal["GetAccessToken"], Literal["GetServiceSettings"], Literal["ListReceivedGrantsForOrganization"], Literal["UpdateLicenseConfiguration"], Literal["DeleteLicenseManagerReportGenerator"], Literal["DeleteToken"], Literal["GetLicenseUsage"], Literal["CreateToken"], Literal["RejectGrant"], Literal["CreateLicenseManagerReportGenerator"], Literal["ListResourceInventory"], Literal["ListLicenseConversionTasks"], Literal["DeleteLicenseConfiguration"], Literal["ListFailuresForLicenseConfigurationOperations"], Literal["TagResource"], Literal["DeleteGrant"], Literal["CreateLicenseVersion"], Literal["ListLicenseManagerReportGenerators"], Literal["ListLicenses"], Literal["ListLicenseVersions"]]
+aws_license_manager_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_license_managerStatement(GenericResourceType[aws_license_manager_privilege_type, aws_license_manager_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

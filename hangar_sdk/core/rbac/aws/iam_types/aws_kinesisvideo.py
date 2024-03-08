@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_kinesisvideo_privilege_type = Union[Literal["DescribeImageGenerationConfiguration"], Literal["SendAlexaOfferToMaster"], Literal["UpdateNotificationConfiguration"], Literal["ListTagsForStream"], Literal["ConnectAsMaster"], Literal["UntagResource"], Literal["PutMedia"], Literal["DeleteStream"], Literal["GetDataEndpoint"], Literal["CreateStream"], Literal["DeleteSignalingChannel"], Literal["DescribeSignalingChannel"], Literal["GetIceServerConfig"], Literal["UpdateMediaStorageConfiguration"], Literal["GetClip"], Literal["GetSignalingChannelEndpoint"], Literal["GetMediaForFragmentList"], Literal["ConnectAsViewer"], Literal["TagStream"], Literal["ListTagsForResource"], Literal["ListSignalingChannels"], Literal["DescribeNotificationConfiguration"], Literal["GetDASHStreamingSessionURL"], Literal["ListEdgeAgentConfigurations"], Literal["UpdateDataRetention"], Literal["DescribeMappedResourceConfiguration"], Literal["ListStreams"], Literal["StartEdgeConfigurationUpdate"], Literal["DescribeStream"], Literal["GetImages"], Literal["CreateSignalingChannel"], Literal["UpdateImageGenerationConfiguration"], Literal["UpdateStream"], Literal["DescribeEdgeConfiguration"], Literal["DescribeMediaStorageConfiguration"], Literal["JoinStorageSession"], Literal["DeleteEdgeConfiguration"], Literal["ListFragments"], Literal["GetMedia"], Literal["TagResource"], Literal["UpdateSignalingChannel"], Literal["UntagStream"], Literal["GetHLSStreamingSessionURL"]]
+aws_kinesisvideo_condition_type = Union[Literal["aws:TagKeys"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_kinesisvideoStatement(GenericResourceType[aws_kinesisvideo_privilege_type, aws_kinesisvideo_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    

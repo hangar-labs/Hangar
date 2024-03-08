@@ -1,0 +1,11 @@
+from typing import Union, Literal, List
+from hangar_sdk.core.rbac.aws.base_type import GenericResourceType
+from hangar_sdk.resources.terraform import AbstractTerraformResource
+
+aws_codestar_connections_privilege_type = Union[Literal["PassConnection"], Literal["UntagResource"], Literal["CreateHost"], Literal["GetHost"], Literal["GetResourceSyncStatus"], Literal["CreateRepositoryLink"], Literal["StartOAuthHandshake"], Literal["CreateSyncConfiguration"], Literal["CreateConnection"], Literal["ListRepositorySyncDefinitions"], Literal["PassRepository"], Literal["ListHosts"], Literal["DeleteRepositoryLink"], Literal["DeleteConnection"], Literal["GetConnection"], Literal["GetRepositoryLink"], Literal["GetSyncConfiguration"], Literal["UseConnection"], Literal["ListInstallationTargets"], Literal["ListTagsForResource"], Literal["UpdateConnectionInstallation"], Literal["ListRepositoryLinks"], Literal["UpdateSyncConfiguration"], Literal["DeleteSyncConfiguration"], Literal["UpdateHost"], Literal["UpdateSyncBlocker"], Literal["DeleteHost"], Literal["ListConnections"], Literal["GetSyncBlockerSummary"], Literal["GetRepositorySyncStatus"], Literal["StartAppRegistrationHandshake"], Literal["RegisterAppCode"], Literal["TagResource"], Literal["GetIndividualAccessToken"], Literal["UpdateRepositoryLink"], Literal["ListSyncConfigurations"], Literal["GetInstallationUrl"]]
+aws_codestar_connections_condition_type = Union[Literal["aws:TagKeys"], Literal["codestar-connections:Branch"], Literal["codestar-connections:HostArn"], Literal["codestar-connections:OwnerId"], Literal["codestar-connections:InstallationId"], Literal["codestar-connections:RepositoryName"], Literal["codestar-connections:PassedToService"], Literal["codestar-connections:ProviderPermissionsRequired"], Literal["codestar-connections:FullRepositoryId"], Literal["codestar-connections:ProviderType"], Literal["codestar-connections:ProviderTypeFilter"], Literal["codestar-connections:BranchName"], Literal["codestar-connections:ProviderAction"], Literal["aws:RequestTag/${TagKey}"]]
+
+class aws_codestar_connectionsStatement(GenericResourceType[aws_codestar_connections_privilege_type, aws_codestar_connections_condition_type]):
+    def __init__(self, policy=None,  arns: List = [],  resources: List[AbstractTerraformResource] = None):
+        super().__init__(policy, arns, resources)
+    
