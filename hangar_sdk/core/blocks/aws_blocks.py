@@ -34,7 +34,9 @@ from hangar_sdk.resources.terraform.aws import (
     data_aws_vpc,
     aws_iam_policy,
     aws_iam_policy_attachment,
-    aws_iam_role
+    aws_iam_role,
+    aws_efs_file_system,
+    aws_efs_mount_target
 )
 from hangar_sdk.resources.terraform.aws import aws_launch_template
 from hangar_sdk.resources.terraform.aws.aws_launch_template import AwsLaunchTemplate
@@ -842,20 +844,36 @@ class DockerVolumeConfiguration(TypedDict):
 
 class VolumeDefinition(TypedDict):
     name: str
-    host: Dict[str, str]
-    sourcePath: str
-    configuredAtLaunch: bool
-    dockerVolumeConfiguration: Dict[str, str]
-    # efsVolumeConfiguration: Dict[str, str]
+    host: Optional[Dict[str, str]]
+    sourcePath: Optional[str]
+    configuredAtLaunch: Optional[bool]
+    dockerVolumeConfiguration: Optional[Dict[str, str]]
+    efsVolumeConfiguration: Optional[Dict[str, str]]
 
 @define(kw_only=True, slots=False)
 class AwsElasticFileSystem(Resource):
     name: str
     group: ResourceGroup
+    availability_zone_name: str
+    subnet: AwsSubnet
 
     def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
         
-        pass
+        self.fs = aws_efs_file_system.AwsEfsFileSystem(
+            top_name=self.name,
+            group=self.group,
+            creation_token = self.name + "_creation_token",
+            availability_zone_name=self.availability_zone_name
+        )
+
+        self.mt = aws_efs_mount_target.AwsEfsMountTarget(
+            top_name=self.name + "_mount_target",
+            group=self.group,
+            file_system_id=self.fs.ref().id,
+            subnet_id=self.subnet.subnet.ref().id
+        )
+
+        return [self.fs, self.mt]
 
 @define(kw_only=True, slots=False)
 class AwsEcsTaskDefinition(Resource):
@@ -868,7 +886,7 @@ class AwsEcsTaskDefinition(Resource):
     cpu : Union[Literal["256"], Literal["512"], Literal["1024"], Literal["2048"], Literal["4096"], Literal["8192"], Literal["16384"]] = "1024"
     memory: str = "2048"
     container_definitions: List[ContainerDefinition]
-    volumes: Optional[VolumeDefinition] = None
+    volumes: Optional[Sequence[AwsElasticFileSystem]] = None
     tags: Optional[Dict[str, str]] = None
     emphemeral_storage_size: Optional[int] = None
 
@@ -886,6 +904,14 @@ class AwsEcsTaskDefinition(Resource):
             requires_compatibilities=self.requires_compatibilities,
             runtime_platform=aws_ecs_task_definition.RuntimePlatform(group=self.group, cpu_architecture=self.cpu_architecture),
             task_role_arn=self.task_role.role.ref().arn,
+            volume=[
+                aws_ecs_task_definition.Volume(
+                    name=volume.name,
+                    efs_volume_configuration=aws_ecs_task_definition.EfsVolumeConfiguration(
+                        file_system_id=volume.fs.ref().id
+                    )
+                ) for volume in self.volumes
+            ] if self.volumes else None
         )  
 
         return [self.task_definition]
