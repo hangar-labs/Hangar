@@ -11,7 +11,8 @@ from hangar_sdk.core import ExecutionType, IResource
 from hangar_sdk.core.terraform import Resource, ResourceGroup
 from hangar_sdk.resources.terraform import Expression
 from hangar_sdk.resources.terraform.aws import (
-    aws_alb,
+    aws_acm_certificate,
+    aws_lb,
     aws_autoscaling_group,
     aws_ebs_volume,
     aws_ecs_capacity_provider,
@@ -25,6 +26,8 @@ from hangar_sdk.resources.terraform.aws import (
     aws_lambda_function,
     aws_lambda_layer_version,
     aws_lb_listener,
+    aws_lb_listener_certificate,
+    aws_lb_listener_rule,
     aws_lb_target_group,
     aws_s3_bucket,
     aws_security_group,
@@ -333,8 +336,10 @@ class AwsLoadBalancer(Resource):
     securityGroups: List[AwsSecurityGroup]
     subnets: List[AwsSubnet]
 
-    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
-        self.lb = aws_alb.AwsAlb(
+    def __attrs_post_init__(self):
+        super().__attrs_post_init__()
+
+        self.lb = aws_lb.AwsLb(
             top_name=self.name,
             group=self.group,
             internal=self.internal,
@@ -347,6 +352,7 @@ class AwsLoadBalancer(Resource):
             tags=self.tags,
         )
 
+    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
         return [self.lb]
 
 
@@ -357,25 +363,35 @@ class AwsLbTargetGroup(Resource):
     _dependencies: list = field(default=Factory(list))
     port: int
     protocol: str
+    vpc: AwsVpc
     healthcheck_path: str
-    vpc_id: str
+    healthcheck_matcher: Optional[str]
+    healtcheck_port: Optional[int]
 
-    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
+    def __attrs_post_init__(self):
+        super().__attrs_post_init__()
+
         self.target_group = aws_lb_target_group.AwsLbTargetGroup(
             group=self.group,
             top_name=self.name,
             name=self.name,
             port=self.port,
             protocol=self.protocol,
-            vpc_id=self.vpc_id,
+            vpc_id=self.vpc.vpc.ref().id,
             health_check=[
                 aws_lb_target_group.HealthCheck(
-                    group=self.group, path=self.healthcheck_path
+                    group=self.group,
+                    path=self.healthcheck_path,
+                    matcher=self.healthcheck_matcher if self.healthcheck_matcher else None,
+                    port=self.healtcheck_port if self.healtcheck_port else None
                 )
             ],
         )
 
+    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
+
         return [self.target_group]
+
 
 
 @define(kw_only=True, slots=False)
@@ -387,9 +403,13 @@ class AwsLbListener(Resource):
     port: int
     protocol: str
     target_group: AwsLbTargetGroup
+    certificate : Optional['AwsCustomManagedCertificate'] = None
 
-    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
-        self.aws_lb_listener = aws_lb_listener.AwsLbListener(
+    def __attrs_post_init__(self):
+        if self.protocol=="HTTPS" and self.certificate is None:
+            raise ValueError("Port 443 requires a certificate")
+        
+        self.lb_listener = aws_lb_listener.AwsLbListener(
             top_name=self.name,
             group=self.group,
             load_balancer_arn=self.load_balancer.lb.ref().arn,
@@ -404,7 +424,73 @@ class AwsLbListener(Resource):
             ],
         )
 
-        return [self.aws_lb_listener]
+
+        return super().__attrs_post_init__()
+
+    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
+
+        if self.certificate and self.protocol == "HTTPS":
+            self.aws_lb_certificate_attachment = aws_lb_listener_certificate.AwsLbListenerCertificate(
+                group=self.group,
+                top_name=self.name + "_certificate",
+                listener_arn=self.aws_lb_listener.ref().arn,
+                certificate_arn=self.certificate.certificate.ref().arn,
+            )
+
+            return [self.lb_listener, self.aws_lb_certificate_attachment]
+        return [self.lb_listener]
+
+
+@define(kw_only=True, slots=False)
+class AwsLoadBalancerRule(Resource):
+    name: str
+    group: ResourceGroup
+    _dependencies: list = field(default=Factory(list))
+    tags: Optional[Dict[str, str]] = None
+    listener: AwsLbListener
+    target_group: AwsLbTargetGroup
+    path_pattern: str
+    priority: Optional[int]
+
+    def __attrs_post_init__(self):
+        super().__attrs_post_init__()
+
+        self.rule = aws_lb_listener_rule.AwsLbListenerRule(
+            group=self.group,
+            top_name=self.name,
+            listener_arn=self.listener.lb_listener.ref().arn,
+            priority=self.priority if self.priority else None,
+            action= [
+                aws_lb_listener_rule.Action(
+                    group=self.group,
+                    forward=[
+                        aws_lb_listener_rule.Forward(
+                            group=self.group,
+                            target_group=[
+                                aws_lb_listener_rule.TargetGroup(
+                                    group=self.group,
+                                    arn=self.target_group.target_group.ref().arn
+                                )
+                            ]
+                        )
+                    ],
+                    type="forward"
+                )
+            ],
+            condition=[
+                aws_lb_listener_rule.Condition(
+                    group=self.group,
+                    path_pattern=aws_lb_listener_rule.PathPattern(
+                        group=self.group,
+                        values=[self.path_pattern]
+                    )
+                )
+            ],
+        )
+
+    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
+
+        return [self.rule]
 
 
 @define(kw_only=True, slots=False)
@@ -582,10 +668,10 @@ class AwsInstanceLaunchTemplate(Resource):
     ami: Optional[str] = None
     instance_type: str
     architecture: Union[Literal["x86_64"], Literal["arm64"]]
-    security_groups: List[AwsSecurityGroup] = field(default=Factory(list)),
-    launch_script: Optional[str] = None,
+    security_groups: List[AwsSecurityGroup] = field(default=Factory(list))
+    launch_script: Optional[str] = None
     version: Optional[str] = None
-    key_pair_name: str = None,
+    key_pair_name: str = None
     instance_role: AwsIamRole
 
     def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
@@ -976,3 +1062,24 @@ class AwsEcsService(Resource):
 
     def get_client(self):
         return boto3.client("ecs")
+
+
+@define(kw_only=True, slots=False)
+class AwsCustomManagedCertificate(Resource):
+    name: str
+    private_key: str
+    certificate_body: str
+
+    def _resolve(self, type: ExecutionType = "create") -> Sequence[IResource]:
+        self.certificate = aws_acm_certificate.AwsAcmCertificate(
+            group=self.group,
+            top_name=self.name,
+            private_key=self.private_key,
+            certificate_body=self.certificate_body,
+        )
+
+        return [self.certificate]
+    
+    def get_client(self):
+        return boto3.client("acm")
+    

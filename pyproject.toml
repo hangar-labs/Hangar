@@ -19,6 +19,7 @@ botocore-stubs = "^1.34.56"
 boto3-stubs = "^1.34.55"
 attrs = "^23.2.0"
 pytest = "^8.0.2"
+requests = "^2.31.0"
 
 
 [tool.poetry.group.dev.dependencies]

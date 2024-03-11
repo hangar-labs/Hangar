@@ -173,3 +173,5 @@ cython_debug/
 temp
 
 prune.py
+
+test_ecs

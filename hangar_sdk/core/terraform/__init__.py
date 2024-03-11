@@ -126,6 +126,7 @@ class Resource(IResource, ABC):
                 )
 
             self.group.buffer.add(resource)
+            print(f"Adding {resource.get_name()} to buffer")
             self.group.buffer.flush(resource.get_name(), type=type)
 
         return res
