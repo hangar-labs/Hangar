@@ -179,6 +179,31 @@ class ServerlessApp:
 
         return function_decorator
 
+    def FastApi(self, func, app_file_name, timeout=60, environment_variables={}, role=None, secrets={}):
+       
+        if self.env == "REMOTE":
+            print("Remote")
+            return HangarServerlessFunction(func, self.group, secrets=secrets)
+
+        if self.env == "LOCAL":
+            return LocalHangarServerlessFunction(func, self.group, secrets=secrets)
+        else:
+            functionPath = (
+                os.path.basename(os.path.join(self.project_path, app_file_name)).split(".")[0]
+                + "."
+                + "handler"
+            )
+
+            self._functions.append(
+                {
+                    "path": functionPath,
+                    "timeout": timeout,
+                    "environment_variables": environment_variables,
+                    "role": role,
+                }
+            )
+            return LocalHangarServerlessFunction(func, self.group)
+
     def LocalEntrypoint(self, func):
         self.local_function = func
         return
@@ -243,6 +268,9 @@ class ServerlessApp:
             asset=layer_asset,
             runtimes=[current_runtime],
         )
+
+        print(self._functions)
+        print("RESOLVING FUNCTIONS")
 
         for func in self._functions:
             LambdaFunction(

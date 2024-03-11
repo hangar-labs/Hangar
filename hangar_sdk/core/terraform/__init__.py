@@ -16,7 +16,7 @@ class ResourceGroup(IGroup):
     resources: List["Resource"] = field(default=Factory(list))
     state_manager: Optional[TerraformStateManager] = None
     buffer: Optional[TerraformBuffer] = None
-    terraform_excecutable: str = "terraform"
+    terraform_executable: str = "terraform"
 
     def __attrs_post_init__(self):
         self.state_manager = TerraformStateManager()
@@ -24,7 +24,7 @@ class ResourceGroup(IGroup):
             basepath=".hangar",
             state_manager=self.state_manager,
             group_name=self.get_name(),
-            executable=self.terraform_excecutable,
+            executable=self.terraform_executable,
         )
 
         self.aws_config = AwsProvider(

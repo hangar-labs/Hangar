@@ -1,6 +1,6 @@
-from typing import Literal, TypeAlias, Union
+from typing import Literal, Union
 
-ServicePrincipalType: TypeAlias = Union[
+ServicePrincipalType = Union[
     Literal["a4b.amazonaws.com"],
     Literal["access-analyzer.amazonaws.com"],
     Literal["account.amazonaws.com"],

@@ -1,14 +1,14 @@
 import json
 import os
-from typing import (Dict, Generic, List, Literal, Set, TypeAlias, TypeVar,
+from typing import (Dict, Generic, List, Literal, Set, TypeVar,
                     Union, get_args)
 
 from hangar_sdk.core.rbac.aws.service_roles import ServicePrincipalType
 
 from hangar_sdk.resources.terraform import AbstractTerraformResource
 
-UserArnType: TypeAlias = str
-EffectType: TypeAlias = Union[Literal["Allow"], Literal["Deny"]]
+UserArnType = str
+EffectType = Union[Literal["Allow"], Literal["Deny"]]
 
 privilege_t = TypeVar("privilege_t")
 condition_t = TypeVar("condition_t")

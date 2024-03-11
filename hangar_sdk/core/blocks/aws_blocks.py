@@ -881,7 +881,7 @@ class AwsEcsTaskDefinition(Resource):
     requires_compatibilities: List[Union[Literal["FARGATE"], Literal["EC2"], Literal["EXTERNAL"]]]
     task_role : AwsIamRole
     execution_role: AwsIamRole
-    network_mode: Union[Literal["awsvpc"], Literal["bridge"] | Literal["host"]]
+    network_mode: Union[Literal["awsvpc"], Literal["bridge"], Literal["host"]]
     cpu_architecture: Union[Literal["X86_64"], Literal["ARM64"]] = "X86_64"
     cpu : Union[Literal["256"], Literal["512"], Literal["1024"], Literal["2048"], Literal["4096"], Literal["8192"], Literal["16384"]] = "1024"
     memory: str = "2048"

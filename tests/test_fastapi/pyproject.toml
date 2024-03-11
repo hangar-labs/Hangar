@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "sdk-test"
+version = "0.1.0"
+description = ""
+authors = ["Mihir <mihir1003@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+openai = "^1.11.1"
+pytest = "^8.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
