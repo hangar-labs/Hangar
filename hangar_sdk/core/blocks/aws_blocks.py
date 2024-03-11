@@ -906,8 +906,10 @@ class AwsEcsTaskDefinition(Resource):
             task_role_arn=self.task_role.role.ref().arn,
             volume=[
                 aws_ecs_task_definition.Volume(
+                    group=self.group,
                     name=volume.name,
                     efs_volume_configuration=aws_ecs_task_definition.EfsVolumeConfiguration(
+                        group=self.group,
                         file_system_id=volume.fs.ref().id
                     )
                 ) for volume in self.volumes
